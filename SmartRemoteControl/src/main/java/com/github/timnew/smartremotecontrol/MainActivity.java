@@ -27,31 +27,43 @@ public class MainActivity
 
     @AfterViews
     void afterViews() {
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //getSupportActionBar().setDisplayShowHomeEnabled(false);
 
-        configureViewPager();
-    }
-
-    private void configureViewPager() {
         pagerActionBarAdapter = new PagerActionBarAdapter(this, pager);
-
-//        pagerActionBarAdapter.registerRemotePanel("debug", "http://192.168.1.6:4000/panels/tv%20box/index.html#box");
-
         pagerActionBarAdapter.notifyDataSetChanged();
 
         checkIrSupport();
     }
 
     private void checkIrSupport() {
-        if (emitter.hasIrEmitter())
+        //No hardware IR support
+        if (emitter == null || !emitter.hasIrEmitter()) {
+            finish();
+            Intent intent = new Intent(this, DialogHostActivity.class);
+            startActivity(intent);
             return;
+        }
 
-        finish();
+        /*
+        unsigned long SANAKY_FAN_ON_OFF  = 0x1FE807F;     //BT Speaker Down = 0x1FE807F (not affected)     //TV 1 = 0x2FD807F
+        unsigned long SANAKY_FAN_SPEED   = 0x1FE50AF;     //BT Speaker Power = 0x1FE50AF
+        unsigned long SANAKY_FAN_OSC     = 0x4106897;     //BT Speaker 3 = 0x1FE6897                       //TV Info = 0x2FD6897
+        unsigned long SANAKY_FAN_MIST    = 0x2FD906F;     //BT Speaker BT = 0x1FE906F (not working)        //TV 9 = 0x2FD906F
+        unsigned long SANAKY_TIMER       = 0x1FE00FF;     //BT Speaker Up = 0x1FE00FF
+        unsigned long SANAKY_ION         = 0x1FEA857;     //BT Speaker 2 = 0x1FEA857
+        unsigned long SANAKY_MODE        = 0x1FE30CF;     //BT Speaker Mute = 0x1FE30CF
 
-        Intent intent = new Intent(this, DialogHostActivity.class);
+        unsigned long BT_SPEAKER_POWER     = 0x1FE50AF;
+        unsigned long BT_SPEAKER_BT        = 0x1FE906F;     //not working
+        unsigned long BT_SPEAKER_AUX       = 0x1FE8877;
+        unsigned long BT_SPEAKER_VOL_UP    = 0x1FE40BF;
+        unsigned long BT_SPEAKER_VOL_DOWN  = 0x1FEC03F;
+        unsigned long BT_SPEAKER_LIGHT     = 0x1FE38C7;
+         */
 
-        startActivity(intent);
+        //Test send code
+        emitter.NEC(32, 0x2FD58A7);
     }
 
     @Override
@@ -65,6 +77,7 @@ public class MainActivity
 
     @OptionsItem(R.id.menu_add_remote_panel)
     protected void showAddRemotePanel() {
-
+        pagerActionBarAdapter.registerRemotePanel("debug", "http://192.168.1.6:4000/panels/tv%20box/index.html#box");
+        pagerActionBarAdapter.notifyDataSetChanged();
     }
 }
