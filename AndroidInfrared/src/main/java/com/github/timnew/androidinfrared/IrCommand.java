@@ -16,12 +16,24 @@ public class IrCommand {
     public static class NEC {
 
         private static final int FREQUENCY = 38028;  // T = 26.296 us
+        private static final int HDR_MARK = 900;
+        private static final int HDR_SPACE = 450;
+        private static final int BIT_MARK = 56;
+        private static final int ONE_SPACE = 169;
+        private static final int ZERO_SPACE = 56;
+
+        /*
+        #define NEC_HDR_MARK    9000
+        #define NEC_HDR_SPACE   4500
+        #define NEC_BIT_MARK     560
+        #define NEC_ONE_SPACE   1690
+        #define NEC_ZERO_SPACE   560
         private static final int HDR_MARK = 342;
         private static final int HDR_SPACE = 171;
         private static final int BIT_MARK = 21;
         private static final int ONE_SPACE = 60;
         private static final int ZERO_SPACE = 21;
-
+        */
 
         private static final IrCommandBuilder.SequenceDefinition SEQUENCE_DEFINITION = simpleSequence(BIT_MARK, ONE_SPACE, BIT_MARK, ZERO_SPACE);
 

@@ -64,6 +64,8 @@ public class MainActivity
 
         //Test send code
         emitter.NEC(32, 0x2FD58A7);
+        emitter.NEC(32, 0x1FE50AF);
+        emitter.NEC(32, 0x1FE40BF);
     }
 
     @Override
